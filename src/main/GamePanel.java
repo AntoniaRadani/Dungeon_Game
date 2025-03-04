@@ -1,5 +1,7 @@
 package main;
 
+import entity.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,7 +9,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     final int originalTileSize = 16; // the size of our player or basically the size of a tile (16 x 16)
     final int scale = 3;
-    final int tileSize = originalTileSize * scale; //actual tile size that we see on our screen
+    public final int tileSize = originalTileSize * scale; //actual tile size that we see on our screen
 
     final int tileCol = 16; // how many tiles on a column
     final int tileRow = 12; // how many tiles on a row
@@ -18,6 +20,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
+    Player player = new Player(this, keyH);
 
     // player's default position
     int playerX = 100;
@@ -104,21 +107,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     public void update(){
-
-        // updating the player coordinates based on input
-
-        if(keyH.upPressed){
-            playerY -= playerSpeed; //the players walk with 4 pixels per second
-        }
-        else if(keyH.downPressed){
-            playerY += playerSpeed;
-        }
-        else if(keyH.leftPressed){
-            playerX -= playerSpeed;
-        }
-        else if(keyH.rightPressed){
-            playerX += playerSpeed;
-        }
+        player.update();
     }
 
     //standard name to draw character in Java
@@ -126,9 +115,7 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
-
-        g2.setColor(Color.black);
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
+        player.draw(g2);
         g2.dispose(); //to save memory
 
     }
