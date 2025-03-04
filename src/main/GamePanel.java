@@ -16,11 +16,14 @@ public class GamePanel extends JPanel implements Runnable{
     final int screenWidth = tileSize * tileCol;
     final int screenHeight = tileSize * tileRow;
 
+    KeyHandler keyH = new KeyHandler();
     Thread gameThread;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.PINK);
+        this.addKeyListener(keyH); // recognize the input
+        this.setFocusable(true); // the game focuses on the input key
     }
 
     public void startGameThread(){
@@ -30,7 +33,30 @@ public class GamePanel extends JPanel implements Runnable{
 
     @Override
     public void run() {
-        //update
-        //playeru
+        while(gameThread != null){
+
+            //update (such as character position)
+            update();
+
+            //draw with the updated informatipn
+            repaint();
+        }
     }
+
+    public void update(){
+
+    }
+
+    //standard name to draw character in Java
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        Graphics2D g2 = (Graphics2D)g;
+
+        g2.setColor(Color.black);
+        g2.fillRect(100, 100, tileSize, tileSize);
+        g2.dispose(); //to save memory
+
+    }
+
 }
