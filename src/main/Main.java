@@ -7,7 +7,7 @@ public class Main {
     private static void createWindow(){
         //creating the windows
         JFrame windows = new JFrame();
-        //the programs terminates when the windows in closed
+        //the program terminates when the windows in closed
         windows.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         windows.setResizable(true);
 
@@ -20,11 +20,12 @@ public class Main {
         windows.setLocationRelativeTo(null);
         //make it visible
         windows.setVisible(true);
+
+        gamePanel.startGameThread();
     }
 
     public static void main(String[] args) {
 
         createWindow();
-
     }
 }
