@@ -14,18 +14,24 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
 
+    public final int screenX;
+    public final int screenY;
+
     // constructor
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
+
+        screenX = gp.screenWidth/2 - gp.tileSize/2;  // the center of the screen
+        screenY = gp.screenHeight/2 - gp.tileSize/2;
 
         setDefaultValues();
         getPlayerImage();
     }
 
     public  void setDefaultValues(){
-        x = 100;
-        y = 100;
+        worldX = 100; // players position in the world map
+        worldY = 100; // where the player starts the game   gp.tileSize * coordonata( linis/coloana din matrice)
         speed = 4;
         direction = "down";
     }
@@ -53,19 +59,19 @@ public class Player extends Entity{
 
         if(keyH.upPressed){
             direction = "up";
-            y -= speed; //the players walk with 4 pixels per second
+            worldY -= speed; //the players walk with 4 pixels per second
         }
         else if(keyH.downPressed){
             direction = "down";
-            y += speed;
+            worldY += speed;
         }
         else if(keyH.leftPressed){
             direction = "left";
-            x -= speed;
+            worldX -= speed;
         }
         else if(keyH.rightPressed){
             direction = "right";
-            x += speed;
+            worldX += speed;
         }
     }
 
@@ -80,6 +86,6 @@ public class Player extends Entity{
             default -> null;
         };
 
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }

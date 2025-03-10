@@ -1,34 +1,47 @@
 package main;
 
 import entity.Player;
+import tiles.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable{
 
-    final int originalTileSize = 16; // the size of our player or basically the size of a tile (16 x 16)
+    // am schimbat originalTileSize care era 16
+    final int originalTileSize = 25; // the size of our player or basically the size of a tile (16 x 16)
     final int scale = 3;
     public final int tileSize = originalTileSize * scale; //actual tile size that we see on our screen
 
-    final int tileCol = 16; // how many tiles on a column
-    final int tileRow = 12; // how many tiles on a row
+    public final int tileCol = 16; // how many tiles on a column
+    public final int tileRow = 12; // how many tiles on a row
 
     // how many pixels will be our screen size
-    final int screenWidth = tileSize * tileCol;
-    final int screenHeight = tileSize * tileRow;
+    public final int screenWidth = tileSize * tileCol;
+    public final int screenHeight = tileSize * tileRow;
 
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH);
 
     // player's default position
-    int playerX = 100;
+    int playerX = 100;   //  le putem sterge ca nu mai e nevoie de ele. dar nu cred ca strica //
     int playerY = 100;
     int playerSpeed = 4;
 
+    // WORLD SETTINGS / MAP
+
+    public final int maxWorldCol = 40;
+    public final int maxWorldRow = 40; // 50 is the size of the matrix
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
+
     //FPS
     int FPS = 60;
+
+    // tiles
+
+    TileManager tileM = new TileManager(this);
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -107,6 +120,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
     public void update(){
+
         player.update();
     }
 
@@ -115,6 +129,9 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
+
+        tileM.draw(g2);
+
         player.draw(g2);
         g2.dispose(); //to save memory
 
