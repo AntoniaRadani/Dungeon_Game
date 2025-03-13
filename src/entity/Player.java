@@ -17,6 +17,8 @@ public class Player extends Entity{
     public final int screenX;
     public final int screenY;
 
+    int counter2 = 0;
+
     // constructor
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -25,13 +27,16 @@ public class Player extends Entity{
         screenX = gp.screenWidth/2 - gp.tileSize/2;  // the center of the screen
         screenY = gp.screenHeight/2 - gp.tileSize/2;
 
+        // making the "body" of the player smaller for better collision handling
+        solidArea = new Rectangle(8, 40, 32, 32);
+
         setDefaultValues();
         getPlayerImage();
     }
 
     public  void setDefaultValues(){
-        worldX = 100; // players position in the world map
-        worldY = 100; // where the player starts the game   gp.tileSize * coordonata( linis/coloana din matrice)
+        worldX = gp.tileSize * 23; // players position in the world map
+        worldY = gp.tileSize * 21; // where the player starts the game   gp.tileSize * coordonata( linis/coloana din matrice)
         speed = 4;
         direction = "down";
     }
@@ -59,20 +64,37 @@ public class Player extends Entity{
 
         if(keyH.upPressed){
             direction = "up";
-            worldY -= speed; //the players walk with 4 pixels per second
         }
         else if(keyH.downPressed){
             direction = "down";
-            worldY += speed;
         }
         else if(keyH.leftPressed){
             direction = "left";
-            worldX -= speed;
         }
         else if(keyH.rightPressed){
             direction = "right";
-            worldX += speed;
         }
+
+        collisionOn = false;
+        gp.cc.checkTile(this);
+
+        if(!collisionOn){
+            switch(direction){
+                case "up":
+                    worldY -= speed; //the players walk with 4 pixels per second
+                    break;
+                case "down":
+                    worldY += speed;
+                    break;
+                case "left":
+                    worldX -= speed;
+                    break;
+                case "right":
+                    worldX += speed;
+                    break;
+            }
+        }
+        //spriteCounter handling????
     }
 
     public void draw(Graphics2D g2){
